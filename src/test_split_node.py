@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextType, TextNode
-from split_node import split_nodes_delimiter, split_nodes_image, split_nodes_link
+from split_node import split_nodes_delimiter, split_nodes_image, split_nodes_link, text_to_textnodes
 
 class TestSplitNode(unittest.TestCase):
     def test_not_text_node(self):
@@ -238,7 +238,7 @@ class SplitLinks(unittest.TestCase):
             TextNode("alt_text2", TextType.LINK, "url")
         ]
         self.assertEqual(new_nodes, expected)
-#
+
     def test_multiple_nodes(self):
         node1 = TextNode("[alt_text1](url) inbetween [alt_text2](url)", TextType.TEXT)
         node2 = TextNode("This is an [alt_text](url) with trailing text", TextType.TEXT)
@@ -250,5 +250,45 @@ class SplitLinks(unittest.TestCase):
             TextNode("This is an ", TextType.TEXT),
             TextNode("alt_text", TextType.LINK, "url"),
             TextNode(" with trailing text", TextType.TEXT)
+        ]
+        self.assertEqual(new_nodes, expected)
+
+class TestTextToTextNode(unittest.TestCase):
+    # def test_empty_string(self):
+    #     text = ""
+    #     new_nodes = text_to_textnodes(text)
+    #     expected = []
+    #     self.assertEqual(new_nodes, expected)
+
+    def test_not_text_node(self):
+        text = "`This is all code`"
+        new_nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is all code", TextType.CODE)
+        ]
+        self.assertEqual(new_nodes, expected)
+
+    def test_text_only(self):
+        text = "This is a text node"
+        new_nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is a text node", TextType.TEXT)
+        ]
+        self.assertEqual(new_nodes, expected)
+
+    def test_multiple_types(self):
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        new_nodes = text_to_textnodes(text)
+        expected = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" with an ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" word and a ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev")
         ]
         self.assertEqual(new_nodes, expected)
