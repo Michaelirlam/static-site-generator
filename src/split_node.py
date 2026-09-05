@@ -75,8 +75,8 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
     return new_nodes
 
 def text_to_textnodes(text: str) -> list[TextNode]:
-    if text == "":
-        return []
+    # if text == "":
+    #     return []
     text_node = TextNode(text, TextType.TEXT)
     old_nodes = [text_node]
 
