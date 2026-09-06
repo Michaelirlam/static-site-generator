@@ -1,6 +1,8 @@
 from blocks import markdown_to_blocks
 from markdown_to_html_node import heading_type, markdown_to_html_node
 import os
+from pathlib import Path
+from copy_static import import_to_public
 
 def extract_title(markdown):
     blocks = markdown_to_blocks(markdown)
@@ -8,6 +10,21 @@ def extract_title(markdown):
     if header == []:
         raise Exception("No h1 in this markdown.")
     return heading_type(header[0])[1]
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    dir_path_content = Path(dir_path_content)
+    dest_dir_path = Path(dest_dir_path)
+
+    for item in dir_path_content.iterdir():
+        if item.is_file():
+            dest_dir_path.mkdir(parents=True, exist_ok=True)
+            new_item = item.with_suffix(".html")
+            dest = dest_dir_path / new_item.name
+            generate_page(item, template_path, dest)
+        else:
+            dest = dest_dir_path / item.name
+            dest.mkdir(parents=True, exist_ok=True)
+            generate_pages_recursive(item, template_path, dest)
 
 def generate_page(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} {template_path}!")
