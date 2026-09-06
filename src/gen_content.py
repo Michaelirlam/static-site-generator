@@ -2,7 +2,6 @@ from blocks import markdown_to_blocks
 from markdown_to_html_node import heading_type, markdown_to_html_node
 import os
 from pathlib import Path
-from copy_static import import_to_public
 
 def extract_title(markdown):
     blocks = markdown_to_blocks(markdown)
