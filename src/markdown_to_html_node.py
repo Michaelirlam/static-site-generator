@@ -1,6 +1,6 @@
 from blocks import markdown_to_blocks, block_to_block_type, BlockType
 from htmlnode import HTMLNode, LeafNode, ParentNode
-from textnode import TextNode, TextType, text_node_to_html_node
+from textnode import text_node_to_html_node
 from matches import extract_markdown_unordered_list, extract_markdown_ordered_list
 from split_node import *
 

@@ -1,7 +1,12 @@
-from textnode import TextNode, TextType
+from copy_static import import_to_public
+import os
+import shutil
 
 def main():
-    text_node = TextNode("hello world", TextType.BOLD, "https://www.boot.dev")
-    print(text_node)
+    public = "./public/"
+    if os.path.exists(public):
+        shutil.rmtree(public)
+    os.mkdir(public)
+    import_to_public()
 
 main()
