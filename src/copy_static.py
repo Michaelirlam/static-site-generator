@@ -1,7 +1,7 @@
 import os
 import shutil
 
-def import_to_public(src="./static/", dest="./public"):
+def import_to_docs(src="./static/", dest="./docs"):
     static = os.listdir(src)
 
     for item in static:
@@ -9,7 +9,7 @@ def import_to_public(src="./static/", dest="./public"):
         dest_item = os.path.join(dest, item)
         if not os.path.isfile(src_item):
             os.makedirs(dest_item, exist_ok=True)
-            import_to_public(src_item, dest_item)
+            import_to_docs(src_item, dest_item)
         else:
             shutil.copy(src_item, dest_item)
     return
